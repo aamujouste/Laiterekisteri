@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace Laitekirjasto
 {
     // Yleinen laiteluokka, yliluokka tietokoneille, tableteille ja puhelimille
-
     class Device
     {
         // Luodaan kenttä (field) name, esitellään (define) ja annetaan arvo (set initial value)
@@ -48,6 +47,24 @@ namespace Laitekirjasto
         }
     }
 
+    // Tietokoneiden luokka, perii ominaisuuksia ja metodeja laiteluokasta Device
+
+    class Computer : Device
+    {
+        // Kentät ja ominaisuudet
+        string processorType;
+        public string ProcessorType {  get { return processorType; } set {  processorType = value; } }
+
+        int amountRAM;
+        public int AmountRam {  get { return amountRAM; } set {  amountRAM = value; } }
+
+        int storageCapacity;
+        public int StorageCapacity { get { return storageCapacity; } set { storageCapacity = value; } }
+
+        // Konstruktorit
+        public Computer() : base()
+        { }
+    }
     // Pääohjelman luokka, josta tulee Program.exe
     internal class Program
     {
@@ -58,12 +75,15 @@ namespace Laitekirjasto
             // Vastaamalla kysymyksiin tiedot tallennetaan muuttujiin.
 
             // Luodaan uusi laite Device-luokasta
-
             Device laite = new Device("Opekone");
             Console.WriteLine("Laitteen nimi on: " + laite.Name);
             Console.WriteLine("Ostopäivä oli: " + laite.PurchaseDate);
 
-            // Pidetään ikkuna auki, kunnes käyttäjä painaa <enter>
+            // Luodaan uusi tietokone, joka perii laiteluokan (Device) ominaisuudet ja metodit
+            Computer tietokone1 = new Computer();
+            Console.WriteLine("Uuden tietokoneen nimi on: " + tietokone1.Name);
+
+            // Pitää ikkunaa auki, kunnes käyttäjä painaa <enter>
             Console.ReadLine();
         }
     }

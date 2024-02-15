@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Laitekirjasto
 {
     // Yleinen laiteluokka, yliluokka tietokoneille, tableteille ja puhelimille
+    // ------------------------------------------------------------------------
     class Device
     {
         // Luodaan kenttä (field) name, esitellään (define) ja annetaan arvo (set initial value)
@@ -36,6 +37,7 @@ namespace Laitekirjasto
         public int StorageCapacity { get { return storageCapacity; } set { storageCapacity = value; } }
 
         // Konstruktori eli olionmuodostin (constructor) ilman argumentteja
+        // ----------------------------------------------------------------
         public Device() 
         { 
 
@@ -55,10 +57,31 @@ namespace Laitekirjasto
             this.price = price;
             this.warranty = warranty;
         }
+
+        // Yliluokan metodit
+        // -----------------
+        public void ShowPurchaseInfo()
+        {
+            // Luetaan laitteen ostotiedot sen kentistä, huom! this
+            Console.WriteLine("Laitteen nimi: " + this.name);
+            Console.WriteLine("Ostopäivä: " + this.purchaseDate);
+            Console.WriteLine("Hinta: " + this.price);
+            Console.WriteLine("Takuu: " + this.warranty + " kk");
+        }
+
+        public void ShowBasicTechnicalInfo()
+        {
+            // Luetaan laitteen yleiset tekniset tiedot ominaisuuksista, huom! iso alkukirjain
+            Console.WriteLine("Laitteen nimi: " + Name);
+            Console.WriteLine("Prosessori: " + ProcessorType);
+            Console.WriteLine("Keskusmuisti: " + AmountRam);
+            Console.WriteLine("Levytila: " + StorageCapacity);
+        }
     }
 
-    // Tietokoneiden luokka, perii ominaisuuksia ja metodeja laiteluokasta Device
+    // --------------------------------------------------------------------------
     class Computer : Device
+    // Tietokoneiden luokka, perii ominaisuuksia ja metodeja laiteluokasta Device
     {
         // Konstruktorit
         public Computer() : base()
@@ -68,29 +91,39 @@ namespace Laitekirjasto
             { }
 
         // Muut metodit
-        public void ShowInfo()
-        {
-            Console.WriteLine("Koneen nimi: " + Name);
-            Console.WriteLine("Prosessori: " + ProcessorType);
-            Console.WriteLine("Keskusmuisti: " + AmountRam);
-            Console.WriteLine("Levytila: " + StorageCapacity);
-        }
+        
     }
 
-    // Tablettien luokka, perii laiteluokan 
+    // -------------------------------------------
     class Tablet : Device
+    // Tablettien luokka, perii laiteluokan Device
     {
-        // Kentät
+        // Kentät ja ominaisuudet
+        // ----------------------
         string operatingSystem;
         public string OperatingSystem { get {  return operatingSystem; } set {  operatingSystem = value; } }
        
         bool stylusEnabled = false;
         public bool StylusEnabled { get {  return stylusEnabled; } set {  stylusEnabled = value; } }
 
+        // Konstruktorit
+        // -------------
+        public Tablet() : base() { }
+        
+        public Tablet(string name) : base(name) { }
+
+        // Tablet-luokan erikoismetodit
+        // ----------------------------
+        public void TabletInfo()
+        {
+            Console.WriteLine("Käyttöjärjestelmä: " + OperatingSystem);
+            Console.WriteLine("Kynätuki: " + StylusEnabled);
+        }
     }
 
-    // Pääohjelman luokka, josta tulee Program.exe
+    // -------------------------------------------
     internal class Program
+    // Pääohjelman luokka, josta tulee Program.exe
     {
         static void Main(string[] args)
         {
@@ -98,26 +131,54 @@ namespace Laitekirjasto
             // Ohjelma kysyy käyttäjältä tietoja laitteista
             // Vastaamalla kysymyksiin tiedot tallennetaan muuttujiin.
 
-            // Luodaan uusi laite Device-luokasta
-            Device laite = new Device("Opekone");
-            Console.WriteLine("Laitteen nimi on: " + laite.Name);
-            Console.WriteLine("Ostopäivä oli: " + laite.PurchaseDate);
-
             // Luodaan uusi tietokone, joka perii laiteluokan (Device) ominaisuudet ja metodit
+            // -------------------------------------------------------------------------------
             Computer tietokone1 = new Computer();
 
             // Asetetaan Prosessori-ominaisuuden arvo
             tietokone1.ProcessorType = "Intel I7";
             tietokone1.AmountRam = 16;
+            tietokone1.PurchaseDate = "15.02.2024";
+            tietokone1.Price = 850.00d;
+            tietokone1.Warranty = 36;
 
-            Console.WriteLine("Uuden tietokoneen nimi on: " + tietokone1.Name + " ja siinä on " + tietokone1.ProcessorType + " -prosessori ja " + tietokone1.AmountRam + " GB keskusmuistia");
+            Console.WriteLine("Tietokone 1:n hankintatiedot");
+            Console.WriteLine("----------------------------");
+            tietokone1.ShowPurchaseInfo();
+            Console.WriteLine("");
 
             // Luodaan uusi nimetty tietokone toisella konstruktorilla
             Computer tietokone2 = new Computer("Aamun PC");
             tietokone2.ProcessorType = "Intel Core I9";
             tietokone2.AmountRam = 32;
-            tietokone2.ShowInfo();
 
+            Console.WriteLine("Tietokone 2:n tekniset tiedot");
+            Console.WriteLine("----------------------------");
+            tietokone2.ShowBasicTechnicalInfo();
+            Console.WriteLine("");
+
+            // Luodaan testiolio tableteille
+            Tablet tabletti1 = new Tablet("Aamun iPad");
+            tabletti1.PurchaseDate = "1.10.2022";
+            tabletti1.Price = 380.00d;
+            tabletti1.OperatingSystem = "IOS";
+            tabletti1.StylusEnabled = true;
+            Console.WriteLine("");
+
+            // Näytetään tietoja metodien avulla
+            Console.WriteLine("Tabletti 1: hankintatiedot tiedot");
+            Console.WriteLine("---------------------------");
+            tabletti1.ShowPurchaseInfo();
+            Console.WriteLine("");
+
+            Console.WriteLine("Tabletti 1: tekniset tiedot");
+            Console.WriteLine("---------------------------");
+            tabletti1.ShowBasicTechnicalInfo();
+            Console.WriteLine("");
+
+            Console.WriteLine("Tabletti 1: erityistiedot");
+            Console.WriteLine("---------------------------");
+            tabletti1.TabletInfo();
 
             // Pitää ikkunaa auki, kunnes käyttäjä painaa <enter>
             Console.ReadLine();
